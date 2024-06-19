@@ -3,15 +3,16 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class TaskStoreFormRequest extends FormRequest
+class TaskStoreFormRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,10 @@ class TaskStoreFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:50',
+            'description' => 'string|min:10',
+            'status' => ['required|string', Rule::in(['pending', 'in_progress', 'completed'])]
         ];
     }
 }
+

@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use App\Events\RegisterUser;
 use App\Http\Requests\LoginFormRequest;
 use App\Http\Requests\RegisterFormRequest;
-use App\Http\Traits\ApiResponseTrait;
+use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use
 
-use Illuminate\Support\Facades\Request;class AuthController extends Controller
+use App\Http\Traits\ApiResponseTrait;
+
+use Illuminate\Http\Request as RequestVerify;
+use Illuminate\Support\Facades\Request;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
+
+class AuthController extends Controller
 {
+
     use ApiResponseTrait;
 
     public function __construct(protected UserService $userService)
@@ -23,10 +30,11 @@ use Illuminate\Support\Facades\Request;class AuthController extends Controller
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
 
-            return $this->error('Invalid login details', 401);
+            return $this->error('Invalid login details', [], HttpResponse::HTTP_UNAUTHORIZED);
         }
 
         $user = Auth::user();
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return $this->success('Login successfully',
@@ -38,46 +46,54 @@ use Illuminate\Support\Facades\Request;class AuthController extends Controller
 
     public function register(RegisterFormRequest $request): JsonResponse
     {
-        $user = $this->userService->create($request->only('name', 'email', 'password'));
-        event(new RegisterUser($user));
+        $user = $this->userService->create($request->safe()->only(['name', 'email', 'password']));
 
-        return $this->success('User created successfully. Please check your email for verification link',
-            $user->id,
-            201);
+        $this->notifyVerify($user);
+
+        return $this->success('User created successfully. Please Check your email for verification link',
+            ['user_id' =>$user->id],
+            HttpResponse::HTTP_CREATED);
     }
 
-    public function logout(): JsonResponse
+    public function logout(User $user): JsonResponse
     {
-        return $this->success('Logout successfully');
+        $user->tokens()->delete();
+        return $this->success('Logout Successfully');
     }
 
-    public function verify(Request $request): JsonResponse
+    public function verify($user_id, RequestVerify $request): JsonResponse
     {
-        $user = $request->user();
 
+        if (!$request->hasValidSignature()) {
+            return $this->error('Invalid or Expired url provided',
+                [],
+                HttpResponse::HTTP_UNAUTHORIZED);
+        }
+
+        $user = User::findOrFail($user_id);
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+        return $this->success('Email has been verified');
+
+    }
+
+    public function resend(User $user): JsonResponse
+    {
         if ($user->hasVerifiedEmail()) {
-            return $this->success('Already verified');
+
+            return $this->error('Email Already Verified', [], HttpResponse::HTTP_BAD_REQUEST);
         }
 
-        return response()->json(['message' => 'Email successfully verified'], 200);
+        $this->notifyVerify($user);
+
+        return $this->success('Email verification link sent on your email');
     }
 
-    public function show(Request $request): JsonResponse
+    private function notifyVerify($user): void
     {
-        return $request->user()->hasVerifiedEmail()
-            ? $this->success('Email already verified')
-            : $this->error('Verify your email address', 403);
-    }
-
-    public function resend(Request $request): JsonResponse
-    {
-        if ($request->user()->hasVerifiedEmail()) {
-            return $this->success('Email already verified');
-        }
-        $request->user()->sendEmailVerificationNotification();
-
-        return $this->success('Verification link resent');
-
+        event(new RegisterUser($user));
     }
 
 

@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LoginFormRequest extends ApiFormRequest
+class UpdateTaskFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +23,9 @@ class LoginFormRequest extends ApiFormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'title' => 'string|max:50',
+            'description' => 'string|min:10',
+            'status' => ['string', Rule::in(['pending', 'in_progress', 'completed'])]
         ];
     }
 }

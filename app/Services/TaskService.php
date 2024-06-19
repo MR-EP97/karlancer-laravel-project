@@ -17,12 +17,12 @@ class TaskService
         return $this->taskRepository->create($data);
     }
 
-    public function update(array $data, $id)
+    public function update(array $data, int $id)
     {
         return $this->taskRepository->update($data, $id);
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         return $this->taskRepository->delete($id);
     }
@@ -32,7 +32,7 @@ class TaskService
         return $this->taskRepository->all();
     }
 
-    public function find($id)
+    public function find(int $id)
     {
         return $this->taskRepository->find($id);
     }

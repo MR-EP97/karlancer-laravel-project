@@ -10,12 +10,13 @@ use Illuminate\Support\Facades\Route;
 //})->middleware('auth:sanctum');
 
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
+
+Route::get('/email/verify/{id}', [AuthController::class, 'verify'])->name('verification.verify')->middleware(['auth:sanctum','signed']);
+Route::post('/email/resend', [AuthController::class, 'resend'])->middleware('auth:sanctum')->name('verification.resend');
 
 Route::apiResource('/tasks', TaskController::class)->middleware(['auth:sanctum', 'verified']);
 
-Route::get('email/verify', [])->middleware(['auth:sanctum', 'verified'])->name('verification.notice');
-Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
-Route::post('email/resend', 'Auth\VerificationController@resend')->middleware(['auth:sanctum', 'throttle:6,1'])->name('verification.resend');

@@ -8,7 +8,7 @@ use App\Models\Task;
 class TaskRepository implements TaskRepositoryInterface
 {
 
-    public function all(): Task
+    public function all(): \Illuminate\Database\Eloquent\Collection
     {
         return Task::all();
     }
@@ -20,15 +20,16 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function update(array $data, $id): Task
     {
-        $user = Task::findOrFail($id);
-        $user->update($data);
-        return $user;
+        $task = Task::findOrFail($id);
+        $task->update($data);
+        $task->save();
+        return $task;
     }
 
     public function delete($id): void
     {
-        $user = Task::findOrFail($id);
-        $user->delete();
+        $task = Task::findOrFail($id);
+        $task->delete();
     }
 
     public function find($id): Task
