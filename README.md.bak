@@ -1,11 +1,11 @@
-# TODO Project
+# Laravel Project
 
 ## Introduction
 This is a simple Laravel project that demonstrates the basic setup and usage of Laravel framework. It includes user authentication(sanctum), database migrations, and a basic CRUD functionality.
 
 ## Requirements
 - PHP >= 8.1
-- laravel 11
+-laravel >= 11
 - Composer
 - sqlite
 
@@ -31,4 +31,3 @@ php artisan db:seed
 ```bash
 php artisan serve --port=80
 php artisan queue:work
-php artisan route:clear
