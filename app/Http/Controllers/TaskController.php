@@ -7,14 +7,12 @@ use App\Http\Requests\UpdateTaskFormRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Traits\ApiResponseTrait;
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
 use OpenApi\Annotations as OA;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
-//use Illuminate\Support\Facades\Request;
 
 class TaskController extends Controller
 {
@@ -107,36 +105,7 @@ class TaskController extends Controller
     }
 
 
-    /**
-     * Update the specified task in storage.
-     */
 
-    /**
-     * @OA\Put(
-     *     path="/api/tasks/{id}",
-     *     summary="Update a task",
-     *     security={{"sanctum":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="ID of the task",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="title", type="string", maxLength=50 ,example="Updated Title"),
-     *             @OA\Property(property="description", type="string", minLength=10, example=""Task description lorem ipson heri qes likj")
-     *             @OA\Property(property="status", type="string",enum="{"pending", "in_progress", "completed"}" ,example="completed")
-     *         ),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Task updated successfully"
-     *     )
-     * )
-     */
     public function update(UpdateTaskFormRequest $request, Task $task): JsonResponse
     {
         if ($id = $request->user()->tasks()->findOrFail($task->id)->id) {

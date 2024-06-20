@@ -211,5 +211,4 @@ class AuthController extends Controller
         event(new RegisterUser($user));
     }
 
-
 }

@@ -23,22 +23,6 @@ class CheckHeaderValues
             return $this->error('Only Support JSON', [], HttpResponse::HTTP_BAD_REQUEST);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return $next($request);
     }
 }
