@@ -3,12 +3,13 @@
 
 ### Built With
 
+* [![Laravel][Laravel.com]][Laravel-url]
+
 ## Introduction
 
 This is a simple Laravel project that demonstrates the basic setup and usage of Laravel framework. It includes user
 authentication(sanctum), database migrations, and a basic CRUD functionality.
 
-* [![Laravel][Laravel.com]][Laravel-url]
 
 ### Requirements
 
