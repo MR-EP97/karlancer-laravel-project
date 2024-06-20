@@ -1,6 +1,5 @@
-<!-- TODO list -->
 
-## About The Project
+## TODO Project
 
 ### Built With
 
@@ -44,3 +43,5 @@ authentication(sanctum), database migrations, and a basic CRUD functionality.
    
     php artisan route:clear
    ```
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
