@@ -36,7 +36,7 @@ authentication(sanctum), database migrations, and a basic CRUD functionality.
    
    php artisan db:seed
    ```
-4. migrate and seed
+4. run
    ```sh
     php artisan serve --port=80
    
