@@ -1,34 +1,46 @@
-# TODO Project
+<!-- TODO list -->
+
+## About The Project
+
+### Built With
 
 ## Introduction
-This is a simple Laravel project that demonstrates the basic setup and usage of Laravel framework. It includes user authentication(sanctum), database migrations, and a basic CRUD functionality.
 
-## Requirements
-- PHP >= 8.1
-- laravel 11
-- Composer
-- sqlite
+This is a simple Laravel project that demonstrates the basic setup and usage of Laravel framework. It includes user
+authentication(sanctum), database migrations, and a basic CRUD functionality.
 
-## Installation
+* [![Laravel][Laravel.com]][Laravel-url]
 
-### Step 1: Clone the repository
-```bash
-git clone https://github.com/MR-EP97/karlancer-laravel-project.git
-cd karlancer-laravel-project
-  
-  
-### Step 2: install
-```bash
-composer i
+### Requirements
 
-### Step 3: migrate and seed
-```bash
-php artisan migrate
-php artisan db:seed
+* PHP >= 8.1
+* laravel 11
+* Composer
+* sqlite
 
+### Installation
 
-### Step 3: run
-```bash
-php artisan serve --port=80
-php artisan queue:work
-php artisan route:clear
+1. Clone the repo
+   ```sh
+   git clone https://github.com/MR-EP97/karlancer-laravel-project.git
+   
+   cd karlancer-laravel-project
+   ```
+2. Install
+   ```sh
+   composer i
+   ```
+3. migrate and seed
+   ```sh
+   php artisan migrate
+   
+   php artisan db:seed
+   ```
+4. migrate and seed
+   ```sh
+    php artisan serve --port=80
+   
+    php artisan queue:work
+   
+    php artisan route:clear
+   ```
